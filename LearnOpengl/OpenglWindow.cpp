@@ -37,6 +37,22 @@ void OpenglWindow::DefaultRenderProc(HDC hDC)
 	glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 
+	//showframe
+	static GLuint frames = 0;
+	static GLfloat timeVal = 0;
+	static GLuint fps = 0;
+	timeVal += Time.GetUnscaledDeltaTime();
+	frames++;
+	if (timeVal > 1)
+	{
+		timeVal = 0;
+		fps = frames;
+		frames = 0;
+	}
+	TCHAR frametext[100];
+	wsprintf(frametext, L"%d", fps);
+	Text::Draw(frametext,0.8,0.9);
+
 	SwapBuffers(hDC);
 }
 
@@ -146,19 +162,6 @@ int OpenglWindow::exec()
 	return 0;
 }
 
-void OpenglWindow::ShowFrames()
-{
-	glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
-	glClear(GL_COLOR_BUFFER_BIT);
-
-	int frames = int(1.0f / Time.GetUnscaledDeltaTime());
-	TCHAR text[100];
-	wsprintf(text, L"%d", frames);
-	Text::Draw(L"123");
-
-	SwapBuffers(hDC);
-}
-
 void OpenglWindow::MainLoop()
 {
 	while (!bQuit)
@@ -181,7 +184,6 @@ void OpenglWindow::MainLoop()
 		{
 			if (isOpenglEnabled)
 				Render(hDC);
-		
 		}
 
 	}

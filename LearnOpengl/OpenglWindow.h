@@ -37,7 +37,6 @@ protected:
 	WNDPROC wndProc;
 	void (*Render)(HDC hDC);
 
-	void ShowFrames();
 	void MainLoop();
 };
 
